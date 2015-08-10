@@ -7,7 +7,7 @@ int binary_search (int arr[], int first, int last, int value)
 {
   if (arr == NULL) return -1;
   
-  while (first < last)
+  while (first <= last)
     {
       int mid = first + ((last - first) >> 1); // 此处涉及到运算效率，TODO: 了解一下底层的运算起实现
       if (arr[mid] == value)
@@ -33,5 +33,10 @@ int main()
   // todo 当具有重复元素时候的 边界考虑
   printf ("find 2: %d\n", binary_search (arr2, 0, len - 1, 2));
   printf ("find 4: %d\n", binary_search (arr2, 0, len - 1, 4));
+
+  // 一个元素的临界值测试
+  int arr3[] = {1};
+  printf ("find 1: %d\n", binary_search (arr3, 0, 0, 1));
+  printf ("find 2: %d\n", binary_search (arr3, 0, 0, 2));
   return 0;
 }
