@@ -20,6 +20,32 @@ int binary_search (int arr[], int first, int last, int value)
   return -1;
 }
 
+/**
+   检索[first, last]之间的目标value
+   返回最左的匹配
+ **/
+int binary_search_left (int arr[],int first, int last, int value)
+{
+  if (arr == NULL) return -1;
+  
+  int index = -1;
+  
+  while (first <= last)
+    {
+      int mid = first + ((last - first) >> 1);
+      if (arr[mid] == value)
+        {
+          index = mid;
+          last = mid - 1;
+        }
+      else if (arr[mid] > value)
+        last = mid - 1;
+      else
+        first = mid + 1;
+    }
+  return index;
+}
+
 int main()
 {
   int arr1[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
@@ -31,8 +57,8 @@ int main()
   int len = sizeof (arr2) / sizeof (int);
   
   // todo 当具有重复元素时候的 边界考虑
-  printf ("find 2: %d\n", binary_search (arr2, 0, len - 1, 2));
-  printf ("find 4: %d\n", binary_search (arr2, 0, len - 1, 4));
+  printf ("find 2: %d\n", binary_search_left (arr2, 0, len - 1, 2));
+  printf ("find 4: %d\n", binary_search_left (arr2, 0, len - 1, 4));
 
   // 一个元素的临界值测试
   int arr3[] = {1};
