@@ -3,11 +3,70 @@
 
 #define MAX_SIZE 20001
 
+/**
+ *  线段树是为了在logn的时间内找到给定区间的最值问题, 其思路是空间换时间,
+ *
+ *  同时考虑下初始化，由于有n个叶子节点，叶子节点上面是n/2个父节点n + n/2 + n/4 + ... + 1 = 2n
+ *  整体初始化的`时间复杂度`与`空间复杂度均为`就是O(2n) = O(n)
+ *  
+ *  e.g 
+ *  arr: [1 7 6 3 1]
+ *  
+ *  那么构建数组`arr`的线段树结构为
+ *  1.                       7[0, 4]
+ *  2.               7[0, 2]               3[3, 4]
+ *  3.        7[0, 1]        6[2]      3[3]     1[4]
+ *  4.    1[0]      7[1]
+ *
+ *  那么考虑下初始化的问题:
+ * 
+ * 考虑下初始化对于每个数组中的元素有两种可能
+ *  1. 区间[left, right] left == right 时 st[index] = arr[left]
+ *  2. 不等的时候, 则要进行选举，那么就是st[index * 2] 与 st[index * 2 + 1] 进行比较
+ *     如果是最大值，那么取大值，赋值给st[index]
+ *
+ *
+ *  这里在进行初始化的时候，需要注意一点st的index从1开始, 那么数组中的元素也是从[1, n]
+ *  可以采用递归的形式
+ *
+ *  void init_segment_tree(s[], index, left, right)
+ *  {
+ *      if  left == right
+ *          st[index] = s[left]
+ *      else
+ *          mid = left + (right - left) / 2
+ *          init_segment_tree(index * 2, left, mid)
+ *          init_segment_tree(index * 2 + 1, mid + 1, right)
+ *          // 这里要处理一个比较的结果
+ *          if st[index * 2] >= st[index * 2 + 1]
+ *              st[index] = st[index * 2]
+ *          else
+ *              st[index] = st[index * 2 + 1]
+ *          
+ *  }
+ *  
+ *  查找的问题:
+ *  
+ *  当给定一个区间时[i, j], 并求该区间的最值时, 会存在如下几种情况:
+ *  1. 待查询的区间，包含了`预处理`的区间内，这个情况为 -----i---pi----pj---j----> 
+ *  2. 第二种，向下遍历min/max (index * 2 and index * 2 + 1)
+ *
+ *
+ *  知道节点数量求树高: log(叶子节点的数量) + 1
+ *  
+ *  
+ *
+ *
+ *
+ *
+ */
+
 
 long number[MAX_SIZE];
 long segment_tree[MAX_SIZE * 2]; // 由于第i层的结点数一定是第i - 1层的2倍，所以，最大的空间约为MAX_SIZE * 2
                                  // 同时segment_tree 是一颗ma
 long answer[MAX_SIZE];
+
 /**
    i: 第几个结点
    start: 区间
