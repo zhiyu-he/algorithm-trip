@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-long f[201];
+long long f[201];
 
 int main()
 {      
@@ -29,8 +29,8 @@ int main()
         //printf ("f[%d] = %ld\n", i, f[i]);
         if (f[i] == 1 && f[i - 1] == 1) break;
     }
-    //printf ("repeated: %d\n", i - 2);
+    printf ("repeated: %d\n", i - 2);
     f[0] = f[i - 2];
-    printf ("%ld\n", f[N % (i - 2)]);
+    printf ("%lld\n", f[N % (i - 2)]);
     return 0;
 }
