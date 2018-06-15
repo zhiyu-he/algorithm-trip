@@ -1,8 +1,8 @@
 #include <stdio.h>
 
 #define MAX_ITEM_SIZE 101
-
-int dp[MAX_ITEM_SIZE][10000];
+#define MAX_CAP 10000
+int dp[MAX_CAP] = {0};
 
 int max_value (int n, int c);
 
@@ -27,21 +27,26 @@ int max_value(int n, int c)
 {
     int i, j;
     int max;
+    // 优化空间之前 dp[i][c] = max(dp[i-1][c], dp[i-1][c-w[i]])
+    // 之前每一次i循环, 会将dp[i-1][0...c]全部依次填充
     for (i = 1; i <= n; i++)
-        for (j = 0; j <= c; j++)
+    {
+        for (j = c; j >= weight[i]; j--)
         {
-            // 首先初始化当前数组元素即 放入i个元素，容量为c的价值大小
-            dp[i][j] = dp[i - 1][j] == 0 ? 0 : dp[i - 1][j];
+            // 初始化涉及到一个问题是, 使用完整的CAP or 允许CAP为空
+            // 前者dp[0] = 0, 其他为负无穷
+            // 直接全部初始化为0
             // 判断当前元素是否可以扔到背包里
             if (j - weight[i] >= 0)
             {
                 int temp;
-                temp = dp[i - 1][j - weight[i]] + value[i];
-                if (temp > dp[i][j])
-                    dp[i][j] = temp;
+                temp = dp[j - weight[i]] + value[i];
+                if (temp > dp[j])
+                    dp[j] = temp;
             }
-            if (dp[i][j] > max)
-              max = dp[i][j];
-            }
+            if (dp[j] > max)
+              max = dp[j];
+        }
+    }
     return max;
 }
