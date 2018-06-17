@@ -17,6 +17,7 @@
 2. [基础算法](#)
     * sort
 	    * heap_sort(堆排序)
+	    * [quick_sort(快速排序)](https://github.com/zhiyu-he/algorithm-trip/blob/master/growth/sort/quick_sort.c)
 
 ##### Rank
 
