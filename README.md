@@ -18,6 +18,7 @@
     * sort
 	    * heap_sort(堆排序)
 	    * [quick_sort(快速排序)](https://github.com/zhiyu-he/algorithm-trip/blob/master/growth/sort/quick_sort.c)
+	    * [bubble_sort(冒泡排序)](https://github.com/zhiyu-he/algorithm-trip/blob/master/growth/sort/bubble_sort.c)
 
 ##### Rank
 

@@ -14,6 +14,8 @@ void quick_sort (int nums[], int i, int j)
     while (left != right)
     {
         // 由于最后要和基准(即base元素)进行交换, 目的为，在基准的右侧，都比基准大.
+        // 同时, 要右侧优先, 也是为了避免，出现左侧出现比基准大的元素
+        // PS: 可以尝试将, while循环，交换位置, 会得到错误的结果....
         while (nums[right] > base && left < right)
             right--;
         while (nums[left] <= base && left < right)
