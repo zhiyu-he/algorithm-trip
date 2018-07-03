@@ -1,49 +1,55 @@
 #include <stdio.h>
 
+/*
+ * 关于二分, 有几点需要注意的为
+ * 1. 每次的搜索为[left, right]的闭区间, 以保证每次循环成立
+ * 2. todo 关于离散数学与二分的证明
+*/
+
 /**
    检索[first, last] 之间的目标value
 **/
 int binary_search (int arr[], int first, int last, int value)
 {
-  if (arr == NULL) return -1;
+    if (arr == NULL) return -1;
   
-  while (first <= last)
+    while (first <= last)
     {
-      int mid = first + ((last - first) >> 1); // 此处涉及到运算效率，TODO: 了解一下底层的运算起实现
-      if (arr[mid] == value)
-        return mid;
-      else if (arr[mid] > value)
-        last = mid - 1;
-      else
-        first = mid + 1;
+        int mid = first + ((last - first) >> 1);    // 此处是为了避免在右边界的溢出
+        if (arr[mid] == value)
+            return mid;
+        else if (arr[mid] > value)
+            last = mid - 1;
+        else
+            first = mid + 1;
     }
-  return -1;
+    return -1;
 }
 
 /**
    检索[first, last]之间的目标value
    返回最左的匹配
- **/
+**/
 int binary_search_left (int arr[],int first, int last, int value)
 {
-  if (arr == NULL) return -1;
+    if (arr == NULL) return -1;
   
-  int index = -1;
+    int index = -1;
   
-  while (first <= last)
+    while (first <= last)
     {
-      int mid = first + ((last - first) >> 1);
-      if (arr[mid] == value)
+        int mid = first + ((last - first) >> 1);
+        if (arr[mid] == value)
         {
-          index = mid;
-          last = mid - 1;
+            index = mid;
+            last = mid - 1;     // 为什么是修改last呢? 因为如果已经是最左侧的了,  则之后也会是最左侧的; 同时, 如果左侧还有value, 那么也应该将last = mid -1;
         }
-      else if (arr[mid] > value)
-        last = mid - 1;
-      else
-        first = mid + 1;
+        else if (arr[mid] > value)
+            last = mid - 1;
+        else
+            first = mid + 1;
     }
-  return index;
+    return index;
 }
 
 int main()
