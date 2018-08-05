@@ -23,12 +23,18 @@ int main()
     
     dis[1] = 0;
 
-    for (int k = 1; k <= n - 1; k++)    // 有n个点, 寻找许多有n-1条边
+    for (int k = 1; k <= n - 1; k++)    // 有n个点, 寻找许多有n-1条边, OPT: 这里是否有性能问题呢?
         for (int i = 1; i <= m; i++)
             // src->v[i] 有没有可能 通过边u[i]->v[i] 这条边松弛
             // 即src->u[i]->v[i]
             if (dis[v[i]] > dis[u[i]] + w[i])
                 dis[v[i]] = dis[u[i]] + w[i];
+    int flag = 0;
+    for (int i = 1; i <= m; i++)
+        if (dis[v[i]] > dis[u[i]] + w[i])
+            flag = 1;
+    if (flag == 1)
+        printf("negtive circuit\n");
 
     for (int i = 1; i <= n; i++)
         printf("%d", dis[i]);

@@ -37,6 +37,8 @@ int main()
                     e[i][j] = e[i][k] + e[k][j];
             }
 
+    int flag = 0;   // 检验负权回路
+
     // print result
     for (int i = 1; i <= n; i++)
     {
