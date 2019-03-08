@@ -19,23 +19,20 @@ class Solution(object):
         r = []
         queue = Queue.Queue()
         queue.put(root)
-        r.append([root.val])
-        each_layer_nodes = []
-        each_layer_node_cnt = 1
         while queue.empty() == False:
-            next_node = queue.get()
-            if next_node.left:
-                queue.put(next_node.left)
-                each_layer_nodes.append(next_node.left.val)
-            if next_node.right:
-                queue.put(next_node.right)
-                each_layer_nodes.append(next_node.right.val)
-            each_layer_node_cnt -= 1
-            if each_layer_node_cnt == 0:
-            	if len(each_layer_nodes) > 0:
-            		r.append(each_layer_nodes[:])
-             	each_layer_node_cnt = len(each_layer_nodes)
-            	each_layer_nodes = []
+            qsize = queue.qsize()
+            layers = []
+            i = 0
+            while i < qsize:
+                next_node = queue.get()
+                layers.append(next_node.val)
+                if next_node.left:
+                    queue.put(next_node.left)
+                if next_node.right:
+                    queue.put(next_node.right)
+                i += 1
+            if len(layers)  > 0:
+                r.append(layers)
         return r
 if __name__ == '__main__':
 	root = TreeNode(3)
