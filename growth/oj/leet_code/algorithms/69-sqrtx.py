@@ -4,6 +4,7 @@
     1. 如何选取左右边界
     2. 如何确定迭代次数
     3. 如何确定相等
+    4. 牛顿迭代法
 '''
 
 class Solution(object):
@@ -14,7 +15,6 @@ class Solution(object):
         """
         if x == 1 or x == 0:
             return x
-        i = 0
         low_bound = 0
         up_bound = float(x)
         first_start = True
@@ -29,7 +29,6 @@ class Solution(object):
                 up_bound = sqrt
 	    else:
                 low_bound = sqrt
-	    i += 1
 	return int(sqrt)
 	
 
