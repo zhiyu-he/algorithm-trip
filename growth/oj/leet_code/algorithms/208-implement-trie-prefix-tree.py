@@ -3,7 +3,7 @@
 '''
     TIPS:
         1. 字典树的数据结构是什么样子的?
-            TreeNode = char_val + is_end + []TreeNode
+            TreeNode = char_val + is_end + {}
         2. 层级关系要如何考虑?
         3. 参数校验, query的深度与Tire的深度
         4. 如何加速
@@ -13,8 +13,6 @@
 class TreeNode(object):
     def __init__(self):
         self.child = {}
-        self.is_end = False
-        self.has_initial = False    # use for search and startsWith api
         self.val = ''
 
     def __str__(self):
@@ -26,6 +24,7 @@ class Trie(object):
         """
         Initialize your data structure here.
         """
+        self.end_of_word = '@'
         self.root = TreeNode()
         self.max_length = 0
 
@@ -37,19 +36,15 @@ class Trie(object):
         """
         length = len(word)
         start_node = self.root
-        i = 0
-        while i < length:
-            idx = word[i]
+        for ch in word:
             # initial if word[i] not in table
-            if word[i] not in start_node.child:
-                start_node.child[idx] = TreeNode()
-            start_node.child[idx].val = word[i]
-            start_node.child[idx].has_initial = True
-            if start_node.child[idx].is_end is False and i == length - 1:
-                #print "fuck  word: %s ch: %s idx: %d\n" % (word, word[i], i)
-                start_node.child[idx].is_end = True
-            start_node = start_node.child[idx]
-            i += 1
+            if ch not in start_node.child:
+                start_node.child[ch] = TreeNode()
+            start_node.child[ch].val = ch
+            start_node = start_node.child[ch]
+
+        if self.end_of_word not in start_node.child:
+            start_node.child[self.end_of_word] = self.end_of_word
         if length > self.max_length:
             self.max_length = length
 
@@ -61,25 +56,15 @@ class Trie(object):
         :type word: str
         :rtype: bool
         """
-        search_flag = False
-        start_root = self.root
-        length = len(word)
-        i = 0
-        while i < length and length <= self.max_length:
-            idx = word[i]
-            #print "word: %s ch: %s idx: %s childs: %s len(child): %d\n" % (word, word[i], idx, start_root.child.get(idx, None), len(start_root.child))
-            if start_root is None or idx not in start_root.child:
-                # guard logic, i don't know why
-                search_flag = False
-                break
-            if start_root.child[idx].has_initial is False:
-                search_flag = False
-                break
-            if i == length - 1 and start_root.child[idx].is_end:
-                search_flag = True
-            start_root = start_root.child[idx]
-            i += 1
-        return search_flag
+
+        if len(word) > self.max_length:
+            return False
+        start_node = self.root
+        for ch in word:
+            if start_node is None or ch not in start_node.child:
+                return False
+            start_node = start_node.child[ch]
+        return self.end_of_word in start_node.child
 
 
 
@@ -89,23 +74,14 @@ class Trie(object):
         :type prefix: str
         :rtype: bool
         """
-        start_root = self.root
-        length = len(prefix)
-        starts_with_flag = length <= self.max_length
-        i = 0
-        while i < length and starts_with_flag:
-            idx = prefix[i]
-            if start_root is None or idx not in start_root.child:
-                # guard logic, i don't know why
-                starts_with_flag = False
-                break
-            #print "prefix: %s ch: %s idx: %d childs: %s len(child): %d\n" % (prefix, prefix[i], idx, start_root.child[idx], len(start_root.child))
-            if start_root.child[idx].has_initial is False:
-                starts_with_flag = False
-                break
-            start_root = start_root.child[idx]
-            i += 1
-        return starts_with_flag
+        if len(prefix) > self.max_length:
+            return False
+        start_node = self.root
+        for ch in prefix:
+            if start_node is None or ch not in start_node.child:
+                return False
+            start_node = start_node.child[ch]
+        return True
 
 if __name__ == '__main__':
     obj = Trie()
