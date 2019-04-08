@@ -16,12 +16,16 @@ class Solution(object):
         :type n: int
         :rtype: int
         """
-        dp = [0, 1, 2]
+        if n <= 1:
+            return 1
+        solid1 = 1
+        solid2 = 2
         step = 3
         while step <= n:
-            dp.append(dp[step-1]+dp[step-2])
+            cur = solid1 + solid2
+            solid1, solid2 = solid2, cur
             step += 1
-        return dp[n]
+        return solid2
 
 
 
