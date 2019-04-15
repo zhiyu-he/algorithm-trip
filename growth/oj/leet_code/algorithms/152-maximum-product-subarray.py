@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+'''
+    TIPS: 同时维护min和max两个DP,是为了处理负数的case. 需要负负得正
+'''
 class Solution(object):
     def maxProduct(self, nums):
         """
