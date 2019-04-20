@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+'''
+TIPS:
+    1. operation (buy, sell)
+    2. for each (buy, sell), we find the longest incr sequence
+    3. but the most important question why longest incr sequence is work?
+'''
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -39,3 +45,5 @@ if __name__ == '__main__':
 	print obj.maxProfit([7,1,5,3,6,4])
 	print obj.maxProfit([1,2,3,4,5])
 	print obj.maxProfit([7,6,4,3,1])
+        print obj.maxProfit([1,5,3,6])
+        print obj.maxProfit([1,2,3,6])
