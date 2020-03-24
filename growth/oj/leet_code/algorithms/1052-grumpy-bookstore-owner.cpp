@@ -6,7 +6,6 @@ using namespace std;
 class Solution {
 public:
     int maxSatisfied(vector<int>& customers, vector<int>& grumpy, int X) {
-        /*
         int satisfied = 0;
         int max_satisfied = 0;
         for (int i = 0; i < customers.size(); i++) {
@@ -29,8 +28,8 @@ public:
         }
                 
         return max_satisfied;
-        */
-
+        /*
+         * WA: 只能在知道全局的场景下, 才能如此滑动. 在grumpy[i] == 1 中间进行了插值, 插值影响结果
         int max_satisfied = 0;
         int satisfied = 0;
         for (int i = 0; i < X; i++) {
@@ -50,6 +49,7 @@ public:
             if (satisfied > max_satisfied)
                 max_satisfied = satisfied;
         }
+        */
 
         return max_satisfied;
     }
