@@ -4,6 +4,12 @@
 
 using namespace std;
 
+// we consider this problem as follow step
+// 1. input0 = n
+// 2. input1 = sum_digits(input0)
+// 3. check input1
+//   3.1 1 or somenumber occure before
+// 4. loop-2
 class Solution {
 public:
     bool isHappy(int n) {
@@ -28,7 +34,6 @@ public:
                 break;
             }
         }
-
         return res;
     }
 };
