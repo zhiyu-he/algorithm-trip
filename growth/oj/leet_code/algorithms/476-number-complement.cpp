@@ -16,6 +16,17 @@ public:
         }
         return num;
     }
+    int findComplement2(int num) {
+        if (num == 0) return 1;
+        unsigned int output = 0;
+        int bit_idx = 0;
+        while(num) {
+            output |= (((num & 1) == 1 ? 0 : 1) << bit_idx);
+            num >>= 1;
+            bit_idx += 1;
+        }
+        return output;
+    }
 };
 
 int main() {
