@@ -2,7 +2,7 @@
 #include<vector>
 
 using namespace std;
-
+/*
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
@@ -33,6 +33,27 @@ public:
         return int(ch);
     }
     
+};
+
+*/
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if (s.size() == 0) return 0;
+        int res = 0;
+        int counter[256] = {0};
+        int start_idx = 0;
+        for (int i = 0; i < s.size(); i++) {
+            while(counter[s[i]] != 0 && start_idx < i) {
+                counter[s[start_idx]] -= 1;
+                start_idx += 1;
+            }
+            counter[s[i]] += 1;
+            res = max(res, i - start_idx + 1);
+        }
+        return res;
+    }
 };
 
 int main() {
