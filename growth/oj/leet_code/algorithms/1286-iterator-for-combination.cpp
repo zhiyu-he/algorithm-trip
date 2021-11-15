@@ -41,6 +41,6 @@ public:
  */
 
 int main() {
-	Solution s;
+    CombinationIterator c("abc", 2);
 	return 0;
 }
