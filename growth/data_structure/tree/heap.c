@@ -1,92 +1,88 @@
 #include <stdio.h>
+#include<iostream>
+/*
+ * Heap的几个基础概念
+ *
+ * Q1: Heap的存储: 本质是一颗完全二叉树
+ *
+ * Q2: Heap的调整: 调整是由某些动作触发的, 这些动作一般为`插入`、`删除(对堆顶元素的弹出也可以理解为删除的一种)`，而调整的目的在于维护堆的性质
+ *
+ * Q3: Heap的性质: 以最小堆为例, 1. 堆顶保存的元素全局最小 2. 给定任意元素heap[i]，其左右孩子分别为heap[i*2]与heap[i*2+1]，同时左右孩子的值小于等于父节点
+ *
+ * Q4: 堆的接口定义: 1. 
+ */
 
-// 堆, 其实就是完全二叉树, 那么什么是堆小堆, 什么是最大堆?
-// 最小堆: 根元素都小于子节点
-// 最大堆: 根元素都大于子节点
-// 删除操作: 当从堆顶移除一个元素后, 只需要对最后一个元素进行shiftup即可 // why not?
-// 删除操作: 从当前堆顶删除一个元素后, h[1] = h[n], shiftdown(h[1])
-// 插入操作: 放入到最后h[n+1] = val, siftup(h[n+1])
-// 同时我们思考一下, 如何利用堆对一组数字进行排序, 假设由小->大
+using namespace std;
 
-// 以小顶堆为例
+const int SIZE = 100;
 
-int array[101], n;
+struct Heap {
+    int elements[SIZE + 1];
+    int next_pos;
+    int capacity;
+};
 
-// 什么情况下会siftup?
-void siftup(int i)
-{
-    // 我们要比较当前节点和父节点的大小关系, 如果比父节点小, 则continue, 否则交换
-    int flag = 0;
-    if (i == 1)
-        return;
-    int t = i / 2;
-    while (t != i && flag != 0)
-    {
-        t = i / 2;
-        if (array[t] > array[i]) {
-            int m = array[t];
-            array[t] = array[i];
-            array[i] = m;
-            i = t;
-        } else {
-            flag = 1;
-        }
+Heap minHeap = {
+    .next_pos = 1,
+    .capacity = 100
+};
+
+// 当有新元素插入时, 执行Up操作
+int up(Heap* h, int x) {
+    int new_val = h->elements[x];
+    int f = x;
+    while (f/2 > 0 && h->elements[f/2] > new_val) {
+        h->elements[f] = h->elements[f/2];
+        f /= 2;
     }
+    h->elements[f] = new_val;
+    return 0;
 }
 
-// 什么情况下会siftdown?
-void siftdown(int i)
-{
-    int flag = 0;
-    while (i * 2 <= n && flag == 0)
-    {
-        // Q: 为什么一定要在左右孩子中选择出最小的那个?
-        int t = i;
-        // 先处理左儿子
-        if (i *2 <= n && array[i*2] < array[i])
-            t = i * 2;
-        // 处理右儿子 
-        if (i*2+1 <= n && array[i*2+1] < array[t])
-            t = i * 2 +1;
-        if (t != i)
-        {
-            int m = array[t];
-            array[t] = array[i];
-            array[i] = m;
-            i = t;
-        } else {
-            flag = 1;
+int down(Heap* h, int x) {
+    int new_val = h->elements[x];
+    int f = x;
+    for (f = x; f * 2 < h->next_pos;) {
+        int child = f * 2;
+        if (child + 1 < h->next_pos && h->elements[child] > h->elements[child+1]) {
+            child = child + 1;
         }
+        if (h->elements[child] > new_val) {
+            break;
+        }
+        h->elements[f] = h->elements[child];
+        f = child;
     }
+    h->elements[f] = new_val;
+    return 0;
 }
 
-void creat()
-{
-    int i;
-    for (i = n /2; i >= 1; i--)
-        siftdown(i);
-    return;
+int pop(Heap* h) {
+    if (h->next_pos == 1)
+        return -1;
+    int res = h->elements[1];
+    h->elements[1] = h->elements[h->next_pos-1];
+    h->next_pos--;
+    down(h, 1);
+    return res;
 }
 
-int deletemin()
-{
-    int t;
-    t = array[1];
-    array[1] = array[n];
-    n--;
-    siftdown(1);
-    return t;
+int insert(Heap* h, int elem) {
+    if (h->next_pos == h->capacity) return -1;
+    h->elements[h->next_pos++] = elem;
+    up(h, h->next_pos-1);
+    return 0;
 }
 
-int main()
-{
+int main() {
     int num;
     scanf("%d", &num);
+    for (int i = 1; i <= num; i++) {
+        int val;
+        scanf("%d", &val);
+        insert(&minHeap, val);
+    }
     for (int i = 1; i <= num; i++)
-        scanf("%d", &array[i]);
-    n = num;
-    creat();
-    for (int i = 1; i <= num; i++)
-        printf("%10d", deletemin());
+        printf("%10d", pop(&minHeap));
     return 0;
 }
