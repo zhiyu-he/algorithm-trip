@@ -30,7 +30,35 @@ public:
     }
 };
 
+class Solution2 {
+public:
+    int numMatchingSubseq(string s, vector<string>& words) {
+        int ans = words.size();
+        vector<vector<int>> cMap(26);
+        for (int i = 0; i < s.length(); i++)
+            cMap[s[i]-'a'].push_back(i);
+        for(string& word : words) {
+            int last = -1;
+            for (char ch : word) {
+                vector<int>& l = cMap[ch-'a'];
+                auto res = upper_bound(l.begin(), l.end(), last);
+                if (res == l.end()) {
+                    ans -= 1;
+                    break;
+                } else {
+                    last = *res;
+                }
+            }
+        }
+        return ans;
+
+    }
+
+
+};
+
 int main() {
 	Solution s;
+    Solution2 s2;
     return 0;
 }
